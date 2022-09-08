@@ -3,6 +3,9 @@ const ganache = require("ganache-cli");
 const Web3 = require("web3");
 const { interface, bytecode } = require("../compile");
 
+// interface = ABI that talks to JS
+// bytecode = compiled Solidity code
+
 // contract test code will go her
 
 const web3 = new Web3(ganache.provider());
@@ -41,5 +44,12 @@ describe("Inbox", () => {
     //reference the contract, dive into methods(all  public functions), reference method, call method
     //when referencing method() pass in arguments
     //use call to run method
+  });
+
+  it("can change the message", async () => {
+    await inbox.methods.setMessage("test").send({ from: accounts[0] });
+    //send() = send transaction
+    const message = await inbox.methods.message().call();
+    assert.equal(message, "test");
   });
 });

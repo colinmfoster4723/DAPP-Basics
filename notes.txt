@@ -1,0 +1,347 @@
+///////////////////////////////
+HISTORY OF ETHEREUM 
+//////////////////////////////
+- October, 21, 2008 Bitcoins first whitepaper describing a blockchain ( 'a tool to store a list of motentary transactions between people')
+
+- People realized you can use blockchain for other exchanges
+
+- Vitalik the creator of Ethereum made his own whitepaper in 2013
+
+- Vitalik wanted to use blockchain to create more advanced applications
+
+SmartContract = piece of code that lives in blockchain
+
+contracts = core of ethereum 
+
+///////////////
+
+////////////////////////
+WHAT IS ETHEREUM?
+////////////////////////
+
+Ethereum Network:
+    - Ethereum networks are used to transfer money and store data
+
+    - Many different Ethereum networks
+
+    - Networks are formed by one or more nodes
+        - a node is a machine thats running an ethereum client
+    
+    - Anyone can create a node
+
+    - Each node can contain a full copy of the blockchain
+        - think of blockchain like a simple database
+
+    - Windows to ethereum network:
+            Developer:
+                - web3.js
+            Consumer:
+                - Metamask(Chrome-Ext)
+                - Mist Browser (Full-Browser in Beta)
+
+Ethereum Accounts:
+    Properties:
+        - Account Address = like an email address or username 
+        - Public Key = authorization
+        - Private Key = authorization
+
+    - Accounts are used across all networks
+
+
+Transaction Properties:
+    nonce:  how many times sender has sent a Transaction
+
+    to: address of account this money is going to
+
+    value: amount of ether to send to target address
+
+    gasPrice: amount of there the sender is willing to pay per unit gas to get this transaction processed
+
+    startGas/gasLimit: Units of gas that this transaction can consume 
+
+    v, r, s: cryptographic pieces of data that can be used to generate the senders account address. Generated from the sender's private key.
+
+///////////////////////////////////////////////////////////////////////
+
+////////////
+BLOCKCHAIN:
+/////////////
+SHA256 Hash:
+    - data => hash
+    - digital fingerprint of data
+    - data that is the same will have the same Hash
+    - the length of the hash never changes, only the characters
+
+BLOCK & BLOCK-CHAIN BASICS:
+
+    BLOCK: 
+        - similar to hash except data section has 3 categories instead of just the raw data
+            - block & nonce & data => hash
+        - has that starts with four zeroes is a signed block
+
+        - Mining = starting at 1 and running through all nonce values to find where hash starts with four zeroes
+
+        Block: Number of block 
+        Nonce: Offset to make hash start w/ four zeroes 
+
+
+    BLOCK-CHAIN:
+        - each block points to the block before it, this creates a blockchain
+            - first block has no prev and its a bunch of zeroes 
+
+        - chainging data in the middle of a blockchain affects everyblock after it as the prev block hash will be different. The block that is changed has to be re-mined and everyblock there after
+        - chainging data at the end of the blockchain only requires that block to be mined 
+
+        - Data in a block is replaced by a token which represents transactions
+
+        - Cannot go back in time and change values of transactions inside tokens as the block chain would break
+
+
+ETHEREUM BLOCK-CHAIN: 
+    - instead of looking for hash that begins with 0000 we are really looking for a hash that is less than the target value our algorithm is looking for
+
+        - data + nonce = output hash => output hash as a base 10 number => is this less than 1000?
+
+    - hashes are 64 characters and represented as hexa decimal, proof of work alogrithm determines if hash represented as base 10 represents a value below the target value that is set 
+
+    BLOCKTIME = wait time on transactions is a result of hashing everything from zero to the correct nonce value, or the runtime of the proof of work algothrim
+        - Ethereum target block time = 15 seconds
+
+        - if block time is taking longer than 15 seconds the network wil increase the target value to speed up Block Time
+            - ex: instead of the target being >1,000 its now >10,000
+        - if block time is running faster than it needs to the network will decrease the target value
+
+//////////////////
+
+////////////////////////////
+SMART CONTRACT
+////////////////////////
+
+- used to build applications on block-chain
+
+- an account but its controlled by code rather than a user, the code instructs the contract on how to behave
+
+FIELDS: 
+    Balance: Amount of ether the account owns
+
+    Storage: Data storage for this contract
+
+    Code: Raw machine code for this contract 
+
+External Accounts = Human Account
+    - completely independant
+Contract Accounts = Smart Contract
+    - can only be accessed on one network
+
+- the contract source is created on a local computer, instances of this contract are created when deployed to a network.
+
+///////////////////
+
+/////////////////////////
+Solidity
+//////////////////////
+
+- Solidity was created to write Smart contracts
+
+- Files are in .sol format 
+
+- The Smart Contract is usually small and so you dont need to be an expert on solidity, most of the time is spent building an application around a smart contract
+
+- Solidity is not posted directly to the blockchain 
+    - first it goes throught the solidity compiler
+    - then its spits out two values:
+        - Byte code ready for deployment
+        - Application Binary Interface(ABI)
+            - ABI translates Bytecode so it can be interacted with
+
+Variables = type, access, name
+    - storage var: stored in smart contract on blockchain
+    - local var: used only when creating Contract
+
+Functions: 
+    - can be called once contract is on block-chain
+
+    - Constructor Function:
+        - a function that has the same name as the contract
+
+        - runs once when contract is created
+    
+    - Syntax:
+        - function name w/ args
+        - types:
+            - public = anyone w/ ethereum account
+
+            - private = only contract
+                - good for helper function
+            
+            - view/constant = does not modify any data in contract
+
+            - pure = does not modify or access contract data
+
+            - payable = ether is accepted at the same time the function runs 
+                - charging for a service
+
+            - returns = only for functions that contain view/constant
+GOTCHAS: 
+    - when creating a public storage variable a function is automatically created with the same name as the variable, this function returns the variable
+        - no need for get function
+
+    - anytime data is changed and a transaction is submitted it takes time to process
+        - cannot send a transaction & return a value in the same function
+    
+    - sending a transaction to a function costs money
+
+    - local test networks process transactions instantly, public networks take time 
+
+When a Contract is created the block-chain treats it similarly to a transaction 
+
+External Account to Create Contract Transaction:
+    nonce: how many times sender has sent a transaction
+
+    to: blank, if blank ethereum network assumes its a contract
+
+    data: compiled bytecode of the contract (code that comes from Solidity compiler)
+
+    value: amount of 'Wei' to send to the target address(contract)
+
+    gasPrice: amount of 'wei' the sender is willing to apy per unit gas to get this transaction processed
+
+    startGas/gasLimit: units of gas that this transaction can consume
+
+~~! Any change on block-chain/contract => submit transaction & wait for proof of work !~~
+
+
+1 ether = 1,000,000,000,000,000,000 wei
+
+gasPrice = price of gas per unit
+gasLimit = units of gas 
+
+If user does not provide enough gas for function, function will hault 
+
+Gas is spent to store data
+    - this limits the scope of applications you can make based off a Smart Contract
+
+12 Word MNEMONIC:
+    - Mnemonic = words that are easy to memorize
+
+    - Memorize 12 words instead of memorizing your address + public-key + private-key
+
+    - You can access any of your accounts using the mnemonic
+
+    - Only way to generate a new mnemonic for metamask is by removing and re-installing the extension
+
+    BIP32 MNEMONIC CONVERSION ALGORITHM:
+        - this algorithm takes the mnemonic and derives all data from it
+
+        - address have already been assigned to mnemonics, everytime you open a new account you proceed down the list of pre-assigned addressses
+
+TRUFFLE:
+    - Contract Creation
+    - Local Testing
+    - deployment
+
+    - still under development
+    - some things dont work or break, this true of all ethereum tech...use as few tools as possible
+
+CUSTOM NODE PROJECT: 
+    - instead of using unstable libraries, build from scratch
+
+    - set up solidity compiler
+
+    - set up custom Mocha testing for testing Solidity
+
+    - set up deploy script to compile & deploy the contract
+
+    - get contract => compile w/ solc.compile() => {
+        bytecode => deploy.js
+
+        abi => web3
+    }
+
+
+    - Ganache/TestRPC = local test network
+
+WEB3:
+    - portal into ethereum world
+    - EVERY FUNCTION OF Web3 has an async behavior
+    - links javascript with ethereum network
+
+    -v0: primitive interface, only supports callback functions for async
+
+    -v1: support for promises & async/await
+
+    -Web3 is a constructor function
+
+    -requires a provider
+        - the provider is like a telephone inbetween the web3 instance and the specified ethereum network
+        - providers are exchangable
+
+
+MOCHA FUNCTIONS & TESTING:
+    it: run a test and make an assertion
+        - assertion = code vs expected value
+
+    describe: groups together 'it' functions
+
+    beforeEach: execute some general setup code
+
+    ex: 
+
+    class Car {
+        park() {
+            return "stopped";
+        }
+
+        drive() {
+            return "vroom";
+        }
+    }
+
+    let car;
+
+    beforeEach(() => {
+    car = new Car();
+    });
+
+    describe("Car Test", () => {
+        it("can park", () => {
+            assert.equal(car.park(), "stopped");
+        });
+
+        it("can drive", () => {
+            assert.equal(car.drive(), "vroom");
+        });
+    });
+
+    //describe() groups it functions
+    //it() labels test, runs function
+    //assert() compares code to expected value
+    //beforeEach() executed before each it()
+
+
+    WORKFLOW OF MOCHA:
+        1) Mocha starts
+
+        2) Deploy a new contract
+            -beforeEach
+
+        3) manipulate the contract
+            -it
+        4) make an assertion about the contract
+            -it 
+
+        5) go back to step 2   
+       
+
+DEPLOYING:
+    - create instance of Web3
+    - link an account to the provider with the mnemonic and attach it to the web3 instance 
+
+    - INFURA:
+        - an api that already has a nodes on all public ethereum networks 
+
+        - npm i hdwallet-provider
+            - this provider connects to a network & unlocks an account
+        
+    
+
